@@ -17,10 +17,10 @@ public class Cryptor {
     private static final String ALGO_TRANSFORMATION_STRING = "AES/GCM/NOPADDING" ;
 
     private SecretKey aesKey;
-    private GCMParameterSpec gcmParamSpec;
-    private byte[] aadData;
-    private byte[] iv;
-    private SecureRandom secRandom;
+    private final GCMParameterSpec gcmParamSpec;
+    private final byte[] aadData;
+    private final byte[] iv;
+    private final SecureRandom secRandom;
 
     public Cryptor() throws NoSuchAlgorithmException {
 
@@ -51,24 +51,20 @@ public class Cryptor {
     }
 
     public String aesEncrypt(String message) throws GeneralSecurityException {
-        Cipher c = null ;
-        c = Cipher.getInstance(ALGO_TRANSFORMATION_STRING); // Transformation specifies algortihm, mode of operation and padding
+        Cipher c = Cipher.getInstance(ALGO_TRANSFORMATION_STRING); // Transformation specifies algortihm, mode of operation and padding
         c.init(Cipher.ENCRYPT_MODE, aesKey, gcmParamSpec, new SecureRandom()) ;
         c.updateAAD(aadData);
-        byte[] cipherTextInByteArr = null ;
-        cipherTextInByteArr = c.doFinal(message.getBytes()) ;
+        byte[] cipherTextInByteArr = c.doFinal(message.getBytes()) ;
         return Base64.getEncoder().encodeToString(cipherTextInByteArr);
     }
 
 
     public String aesDecrypt(String encryptedTextEncode) throws GeneralSecurityException {
         byte[] encryptedMessage = Base64.getDecoder().decode(encryptedTextEncode);
-        Cipher c = null ;
-        c = Cipher.getInstance(ALGO_TRANSFORMATION_STRING); // Transformation specifies algortihm, mode of operation and padding
+        Cipher c = Cipher.getInstance(ALGO_TRANSFORMATION_STRING); // Transformation specifies algortihm, mode of operation and padding
         c.init(Cipher.DECRYPT_MODE, aesKey, gcmParamSpec, new SecureRandom()) ;
         c.updateAAD(aadData) ; // Add AAD details before decrypting
-        byte[] plainTextInByteArr = null ;
-        plainTextInByteArr = c.doFinal(encryptedMessage);
+        byte[] plainTextInByteArr = c.doFinal(encryptedMessage);
         return new String(plainTextInByteArr);
     }
 }
