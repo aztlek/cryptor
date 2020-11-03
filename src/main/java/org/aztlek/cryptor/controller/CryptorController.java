@@ -1,8 +1,6 @@
 package org.aztlek.cryptor.controller;
 
-import org.aztlek.cryptor.dto.Request;
 import org.aztlek.cryptor.util.Cryptor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,11 +17,11 @@ import java.security.NoSuchAlgorithmException;
 public class CryptorController {
 
     @PostMapping("/encrypt")
-    public ResponseEntity<String> aesEncrypt(@RequestBody Request request) {
-        System.out.println("aesEncrypt: request.getMessage() = '" + request.getMessage() + "´");
+    public ResponseEntity<String> aesEncrypt(@RequestBody String message) {
+        System.out.println("aesEncrypt: message = '" + message + "´");
         try {
             Cryptor cryptor = new Cryptor();
-            String encryptedTextEncode = cryptor.aesEncrypt(request.getMessage());
+            String encryptedTextEncode = cryptor.aesEncrypt(message);
             System.out.println("aesEncrypt: encryptedTextEncode = '" + encryptedTextEncode + "´");
             return ResponseEntity.ok(encryptedTextEncode);
         } catch (NoSuchAlgorithmException | InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
@@ -32,11 +30,11 @@ public class CryptorController {
     }
 
     @PostMapping("/decrypt")
-    public ResponseEntity<String> aesDecrypt(@RequestBody Request request) {
-        System.out.println("aesDecrypt: request.getMessage() = '" + request.getMessage() + "´");
+    public ResponseEntity<String> aesDecrypt(@RequestBody String message) {
+        System.out.println("aesDecrypt: message = '" + message + "´");
         try {
             Cryptor cryptor = new Cryptor();
-            String decryptedText = cryptor.aesDecrypt(request.getMessage());
+            String decryptedText = cryptor.aesDecrypt(message);
             System.out.println("aesDecrypt: decryptedText = '" + decryptedText + "'");
             return ResponseEntity.ok(cryptor.aesDecrypt(decryptedText));
         } catch (NoSuchAlgorithmException | InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
