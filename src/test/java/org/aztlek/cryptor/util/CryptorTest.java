@@ -1,28 +1,19 @@
 package org.aztlek.cryptor.util;
 
 
-import org.junit.Before;
 import org.junit.Test;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.security.GeneralSecurityException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class CryptorTest {
 
     private static final String messageToEncrypt = "cualquier texto más largo" ;
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
     @Test
-    public void aesEncrypt() throws NoSuchPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+    public void aesEncrypt() throws GeneralSecurityException {
         Cryptor cryptor = new Cryptor();
         String encryptedTextEncode = cryptor.aesEncrypt(messageToEncrypt);
         assertNotEquals(messageToEncrypt,encryptedTextEncode);
@@ -31,7 +22,7 @@ public class CryptorTest {
     }
 
     @Test
-    public void aesEncrypt2() throws NoSuchPaddingException, InvalidKeyException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+    public void aesEncrypt2() throws GeneralSecurityException {
         Cryptor cryptor1 = new Cryptor();
         String encryptedTextEncode = cryptor1.aesEncrypt(messageToEncrypt);
         assertNotEquals(messageToEncrypt,encryptedTextEncode);

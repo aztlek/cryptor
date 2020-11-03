@@ -1,18 +1,13 @@
 package org.aztlek.cryptor.util;
 
-import java.security.InvalidAlgorithmParameterException ;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException ;
-import java.security.SecureRandom ;
-import java.util.Base64 ;
-
-import javax.crypto.BadPaddingException ;
-import javax.crypto.Cipher ;
-import javax.crypto.IllegalBlockSizeException ;
+import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException ;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.GCMParameterSpec ;
+import javax.crypto.spec.GCMParameterSpec;
+import java.security.GeneralSecurityException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 
 public class Cryptor {
@@ -55,7 +50,7 @@ public class Cryptor {
         secRandom.nextBytes(iv);
     }
 
-    public String aesEncrypt(String message) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    public String aesEncrypt(String message) throws GeneralSecurityException {
         Cipher c = null ;
         c = Cipher.getInstance(ALGO_TRANSFORMATION_STRING); // Transformation specifies algortihm, mode of operation and padding
         c.init(Cipher.ENCRYPT_MODE, aesKey, gcmParamSpec, new SecureRandom()) ;
@@ -66,14 +61,14 @@ public class Cryptor {
     }
 
 
-    public String aesDecrypt(String encryptedTextEncode) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    public String aesDecrypt(String encryptedTextEncode) throws GeneralSecurityException {
         byte[] encryptedMessage = Base64.getDecoder().decode(encryptedTextEncode);
         Cipher c = null ;
         c = Cipher.getInstance(ALGO_TRANSFORMATION_STRING); // Transformation specifies algortihm, mode of operation and padding
         c.init(Cipher.DECRYPT_MODE, aesKey, gcmParamSpec, new SecureRandom()) ;
         c.updateAAD(aadData) ; // Add AAD details before decrypting
         byte[] plainTextInByteArr = null ;
-        plainTextInByteArr = c.doFinal(encryptedMessage) ;
+        plainTextInByteArr = c.doFinal(encryptedMessage);
         return new String(plainTextInByteArr);
     }
 }
